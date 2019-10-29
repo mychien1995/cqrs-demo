@@ -42,12 +42,20 @@ namespace CQRSDemo.DataSeeder
                         repository.Insert(product);
                         if (count == batch)
                         {
-                            count = 0;
-                            repository.SaveChanges();
+                            try
+                            {
+                                count = 0;
+                                repository.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+
+                            }
                         }
                     }
                 }
             }
+            Console.WriteLine("DONE");
         }
     }
 }
