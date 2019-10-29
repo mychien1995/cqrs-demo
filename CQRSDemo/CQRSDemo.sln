@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSDemo.Models", "CQRSDemo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSDemo.Engine", "CQRSDemo.Engine\CQRSDemo.Engine.csproj", "{E4B8F9DD-8A99-4661-9056-584C226EF93F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSDemo.DataSeeder", "CQRSDemo.DataSeeder\CQRSDemo.DataSeeder.csproj", "{64A30662-504E-4628-B150-28CB0FEB0083}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{E4B8F9DD-8A99-4661-9056-584C226EF93F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4B8F9DD-8A99-4661-9056-584C226EF93F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4B8F9DD-8A99-4661-9056-584C226EF93F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64A30662-504E-4628-B150-28CB0FEB0083}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64A30662-504E-4628-B150-28CB0FEB0083}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64A30662-504E-4628-B150-28CB0FEB0083}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64A30662-504E-4628-B150-28CB0FEB0083}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
