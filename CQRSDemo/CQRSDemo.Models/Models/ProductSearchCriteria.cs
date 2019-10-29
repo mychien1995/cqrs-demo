@@ -8,6 +8,11 @@ namespace CQRSDemo.Models
 {
     public class ProductSearchCriteria : IRedisCachable
     {
+        public ProductSearchCriteria()
+        {
+            PageIndex = 0;
+            PageSize = 5000;
+        }
         public string Text { get; set; }
         public string Type { get; set; }
         public string Category { get; set; }
@@ -19,7 +24,7 @@ namespace CQRSDemo.Models
         {
             get
             {
-                return $"Product-[${Text}]-[${Type}]-[${Category}]-[${Brand}]-[${PageIndex}]-[${PageSize}]";
+                return $"Product-[{Text}]-[{Type}]-[{Category}]-[{Brand}]-[{PageIndex}]-[{PageSize}]";
             }
         }
 

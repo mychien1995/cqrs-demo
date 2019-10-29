@@ -17,7 +17,7 @@ namespace CQRSDemo.DataSeeder
         {
             var rand = new Random();
             //Put csv file here to run
-            var csvFilePath = @"F:\Download\womens-shoes-prices\7210_1.csv";
+            var csvFilePath = @"D:\Download\womens-shoes-prices\7210_1.csv";
             var repository = new ProductRepository();
             using (var reader = new StreamReader(csvFilePath))
             {
@@ -35,8 +35,8 @@ namespace CQRSDemo.DataSeeder
                             ProductBrand = item.brand,
                             ProductName = item.name,
                             ProductCategory = item.categories,
-                            ProductType = item.colors,
-                            ProductPrice = (decimal)rand.NextDouble() * 100,
+                            ProductType = item.colors != null ? ((string)item.colors).Split(',').First() : "",
+                            ProductPrice = Math.Floor((decimal)(rand.NextDouble() * 100)) / 100,
                             ProductImage = item.imageURLs != null ? ((string)item.imageURLs).Split(',').First() : ""
                         };
                         repository.Insert(product);

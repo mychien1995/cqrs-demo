@@ -73,7 +73,7 @@ namespace CQRSDemo.Data.EF.Repositories
 
         public IQueryable<T> GetQueryable()
         {
-            return Dbset.AsQueryable();
+            return Dbset.AsQueryable().AsNoTracking();
         }
 
         public T Insert(T t)

@@ -1,6 +1,7 @@
 ﻿using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,8 @@ namespace CQRSDemo.Engine.Redis
         }
         public RedisContext()
         {
-            RedisConnection = ConnectionMultiplexer.Connect("localhost");
+            var connString = ConfigurationManager.AppSettings["RedisConnection"] ?? "localhost:6379";
+            RedisConnection = ConnectionMultiplexer.Connect(connString);
         }
 
         public void Dispose()

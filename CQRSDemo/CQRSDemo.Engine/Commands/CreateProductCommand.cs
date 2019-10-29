@@ -1,6 +1,7 @@
 ﻿using CQRSDemo.Data.EF;
 using CQRSDemo.Data.EF.Entities;
 using CQRSDemo.Data.EF.Repositories;
+using CQRSDemo.Engine.Elastic;
 using CQRSDemo.Engine.Redis;
 using CQRSDemo.Models;
 using Newtonsoft.Json;
@@ -45,7 +46,7 @@ namespace CQRSDemo.Engine.Commands
         }
         private void InsertToElasticSearch(ProductModel product)
         {
-
+            new ContentIndexer().Index(product);
         }
     }
 }

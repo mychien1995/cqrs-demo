@@ -1,4 +1,5 @@
-﻿using CQRSDemo.Engine.Redis;
+﻿using CQRSDemo.Engine.Elastic;
+using CQRSDemo.Engine.Redis;
 using CQRSDemo.Models;
 using Newtonsoft.Json;
 using System;
@@ -24,8 +25,9 @@ namespace CQRSDemo.Engine.Queries
                 var cachedObject = context.Database.StringGet(Query.CacheKey);
                 if (cachedObject.IsNullOrEmpty)
                 {
+                    var searcher = new ContentSearcher();
                     //Search with elastic search
-                    SearchResult<ProductModel> searchResult = null;
+                    SearchResult<ProductModel> searchResult = searcher.Search(Query);
                     var serializedValue = JsonConvert.SerializeObject(searchResult);
                     context.Database.StringSet(Query.CacheKey, serializedValue);
                     return searchResult;
