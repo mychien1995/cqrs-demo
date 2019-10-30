@@ -26,6 +26,7 @@ namespace CQRSDemo.Presentation.Controllers
             viewModel.Data = result;
             viewModel.QueryTime = elapsedMs;
             ViewBag.Heading = "Query with Redis and Elastic Search";
+            ViewBag.IsSql = false;
             return View(viewModel);
         }
 
@@ -40,6 +41,7 @@ namespace CQRSDemo.Presentation.Controllers
             viewModel.Data = result;
             viewModel.QueryTime = elapsedMs;
             ViewBag.Heading = "Query with SQL";
+            ViewBag.IsSql = true;
             return View("~/Views/Products/Index.cshtml", viewModel);
         }
 
@@ -54,7 +56,21 @@ namespace CQRSDemo.Presentation.Controllers
             var viewModel = new SearchResultViewModel<ProductModel>();
             viewModel.Data = result;
             viewModel.QueryTime = elapsedMs;
-            return View(viewModel);
+            return PartialView("~/Views/Products/_Search.cshtml", viewModel);
+        }
+
+        [HttpGet]
+        public ActionResult SqlSearch(ProductSearchCriteria criteria)
+        {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            var query = new SqlSearchProductQuery(criteria);
+            var result = query.Execute();
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+            var viewModel = new SearchResultViewModel<ProductModel>();
+            viewModel.Data = result;
+            viewModel.QueryTime = elapsedMs;
+            return PartialView("~/Views/Products/_Search.cshtml", viewModel);
         }
         [HttpGet]
         public ActionResult Insert()

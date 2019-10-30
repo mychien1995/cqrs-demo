@@ -1,0 +1,37 @@
+﻿@{
+    Layout = null;
+}
+@using CQRSDemo.Models
+@model CQRSDemo.Presentation.Models.SearchResultViewModel<ProductModel>
+
+<h3>Execution time: @Model.QueryTime ms</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>Name</td>
+            <td>Brand</td>
+            <td>Categories</td>
+            <td>Color</td>
+            <td>Price</td>
+            <td>Action</td>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var data = Model.Data.Result;
+            foreach (var item in data)
+            {
+                <tr>
+                    <td>@item.ProductId</td>
+                    <td>@item.ProductName</td>
+                    <td>@item.ProductBrand</td>
+                    <td>@item.ProductCategory</td>
+                    <td>@item.ProductType</td>
+                    <td>@item.ProductPrice</td>
+                    <td><a class="btn-sm btn-info" href="/Products/Update?id=@item.ProductId"><i class="glyphicon-pencil"></i></a></td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

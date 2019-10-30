@@ -3,35 +3,43 @@
 
 
 <h1>@ViewBag.Heading</h1>
-<h3>Execution time: @Model.QueryTime ms</h3>
-<a class="btn-sm btn-primary" href="/Products/Insert">Insert</a>
-<table class="table">
-    <thead>
-        <tr>
-            <td>Id</td>
-            <td>Name</td>
-            <td>Brand</td>
-            <td>Categories</td>
-            <td>Color</td>
-            <td>Price</td>
-            <td>Action</td>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            var data = Model.Data.Result;
-            foreach (var item in data)
-            {
-                <tr>
-                    <td>@item.ProductId</td>
-                    <td>@item.ProductName</td>
-                    <td>@item.ProductBrand</td>
-                    <td>@item.ProductCategory</td>
-                    <td>@item.ProductType</td>
-                    <td>@item.ProductPrice</td>
-                    <td><a class="btn-sm btn-info" href="/Products/Update?id=@item.ProductId"><i class="glyphicon-pencil"></i></a></td>
-                </tr>
+<style>
+    table > tbody tr td:nth-child(5) {
+        max-width: 100px;
+        word-break: break-word;
+    }
+
+    table > tbody tr td:nth-child(4) {
+        max-width: 200px;
+        word-break: break-word;
+    }
+
+    table > tbody tr td:nth-child(2) {
+        max-width: 350px;
+        word-break: break-word;
+    }
+</style>
+<div class="form-group">
+    <input type="text" placeholder="Search product" class="form-control" style="margin-bottom:10px;" id="textSearch" />
+    <button class="btn btn-primary" onclick="searchProduct()">Search</button>
+    <a class="btn btn-primary" href="/Products/Insert" style="margin-left:10px">Insert</a>
+    <input type="hidden" value="@ViewBag.IsSql" id="isSql" />
+</div>
+<div id="result">
+    @Html.Partial("~/Views/Products/_Search.cshtml", Model)
+</div>
+<script>
+    function searchProduct() {
+        var isSql = $('#isSql').val();
+        var url = isSql ? '/Products/SqlSearch' : '/Products/Search';
+        var text = $('#textSearch').val();
+        url = url + '?text=' + text;
+        $.ajax({
+            url: url,
+            success: function (response) {
+                $('#result *').remove();
+                $('#result').append(response);
             }
-        }
-    </tbody>
-</table>
+        });
+    }
+</script>
