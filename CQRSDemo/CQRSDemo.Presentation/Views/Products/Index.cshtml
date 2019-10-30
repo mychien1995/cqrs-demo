@@ -1,13 +1,11 @@
-﻿@{
-    Layout = null;
-}
-@using CQRSDemo.Models
+﻿@using CQRSDemo.Models
 @model CQRSDemo.Presentation.Models.SearchResultViewModel<ProductModel>
 
 
-<h1>Query with Redis and Elastic Search</h1>
+<h1>@ViewBag.Heading</h1>
 <h3>Execution time: @Model.QueryTime ms</h3>
-<table>
+<a class="btn-sm btn-primary" href="/Products/Insert">Insert</a>
+<table class="table">
     <thead>
         <tr>
             <td>Id</td>
@@ -16,6 +14,7 @@
             <td>Categories</td>
             <td>Color</td>
             <td>Price</td>
+            <td>Action</td>
         </tr>
     </thead>
     <tbody>
@@ -30,6 +29,7 @@
                     <td>@item.ProductCategory</td>
                     <td>@item.ProductType</td>
                     <td>@item.ProductPrice</td>
+                    <td><a class="btn-sm btn-info" href="/Products/Update?id=@item.ProductId"><i class="glyphicon-pencil"></i></a></td>
                 </tr>
             }
         }

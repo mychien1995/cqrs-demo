@@ -25,6 +25,7 @@ namespace CQRSDemo.Presentation.Controllers
             var viewModel = new SearchResultViewModel<ProductModel>();
             viewModel.Data = result;
             viewModel.QueryTime = elapsedMs;
+            ViewBag.Heading = "Query with Redis and Elastic Search";
             return View(viewModel);
         }
 
@@ -38,6 +39,7 @@ namespace CQRSDemo.Presentation.Controllers
             var viewModel = new SearchResultViewModel<ProductModel>();
             viewModel.Data = result;
             viewModel.QueryTime = elapsedMs;
+            ViewBag.Heading = "Query with SQL";
             return View("~/Views/Products/Index.cshtml", viewModel);
         }
 
@@ -54,7 +56,12 @@ namespace CQRSDemo.Presentation.Controllers
             viewModel.QueryTime = elapsedMs;
             return View(viewModel);
         }
-
+        [HttpGet]
+        public ActionResult Insert()
+        {
+            var model = new ProductModel();
+            return View(model);
+        }
         // POST api/values
         [HttpPost]
         public ActionResult Insert(ProductModel model)
@@ -62,6 +69,14 @@ namespace CQRSDemo.Presentation.Controllers
             var command = new CreateProductCommand(model);
             command.Execute();
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult Update(int id)
+        {
+            var query = new GetProductByIdQuery(id);
+            var product = query.Execute();
+            return View(product);
         }
 
         [HttpPost]

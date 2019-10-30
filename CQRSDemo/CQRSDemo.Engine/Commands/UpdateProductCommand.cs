@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 
 namespace CQRSDemo.Engine.Commands
 {
-    public class CreateProductCommand : ICommand<ProductModel>
+    public class UpdateProductCommand : ICommand<ProductModel>
     {
         private ProductModel Product;
         private readonly IProductRepository _productRepository;
-        public CreateProductCommand(ProductModel productToCreate)
+        public UpdateProductCommand(ProductModel productToCreate)
         {
             Product = productToCreate;
             _productRepository = new ProductRepository();
@@ -25,19 +25,19 @@ namespace CQRSDemo.Engine.Commands
         public ProductModel Execute()
         {
             var product = this.Product.ToEntity();
-            var newProduct = InsertToDatabase(product);
-            InsertToElasticSearch(newProduct);
-            InsertToRedis(newProduct);
+            var newProduct = UpdateToDatabase(product);
+            UpdateToElasticSearch(newProduct);
+            UpdateToRedis(newProduct);
             return newProduct;
         }
 
-        private ProductModel InsertToDatabase(Product product)
+        private ProductModel UpdateToDatabase(Product product)
         {
-            _productRepository.Insert(product);
+            _productRepository.Update(product);
             _productRepository.SaveChanges();
             return product.ToModel();
         }
-        private void InsertToRedis(ProductModel product)
+        private void UpdateToRedis(ProductModel product)
         {
             using (var context = new RedisContext())
             {
@@ -45,7 +45,7 @@ namespace CQRSDemo.Engine.Commands
                 context.Database.StringSet(product.CacheKey, value);
             }
         }
-        private void InsertToElasticSearch(ProductModel product)
+        private void UpdateToElasticSearch(ProductModel product)
         {
             new ContentIndexer().Index(product);
         }

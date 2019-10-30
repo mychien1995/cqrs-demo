@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CQRSDemo.Engine.Queries
 {
-    public class SqlSearchProductQuery
+    public class SqlSearchProductQuery : IQuery<SearchResult<ProductModel>>
     {
         private ProductSearchCriteria Query;
         public SqlSearchProductQuery(ProductSearchCriteria query)
