@@ -49,7 +49,7 @@ namespace CQRSDemo.Engine.Elastic
                             queries
                         )
                         )
-                    ).Skip(criteria.PageIndex * criteria.PageSize).Take(criteria.PageSize)
+                    ).Sort(s => s.Descending(c => c.ProductId)).Skip(criteria.PageIndex * criteria.PageSize).Take(criteria.PageSize)
                 );
             var projects = response.Documents;
             var data = projects.Select(x => x.ToModel()).ToList();

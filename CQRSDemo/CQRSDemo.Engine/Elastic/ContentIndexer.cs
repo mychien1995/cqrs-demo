@@ -24,6 +24,10 @@ namespace CQRSDemo.Engine.Elastic
             var documents = models.Select(x => x.ToDocument());
             var test = documents.First();
             var response = client.IndexMany(documents);
+            if (!response.ApiCall.Success)
+            {
+
+            }
         }
     }
 }

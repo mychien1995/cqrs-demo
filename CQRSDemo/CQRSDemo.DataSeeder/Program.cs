@@ -4,6 +4,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace CQRSDemo.DataSeeder
         {
             var rand = new Random();
             //Put csv file here to run
-            var csvFilePath = @"F:\Download\womens-shoes-prices\7210_1.csv";
+            var csvFilePath = ConfigurationManager.AppSettings["CsvPath"] ??  @"D:\Download\womens-shoes-prices\7210_1.csv";
             var repository = new ProductRepository();
             using (var reader = new StreamReader(csvFilePath))
             {

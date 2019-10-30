@@ -18,6 +18,23 @@
         max-width: 350px;
         word-break: break-word;
     }
+
+    .loader {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        background: #000;
+        top: 0;
+        left: 0;
+        opacity: 0.3;
+        display: none;
+    }
+
+        .loader img {
+            top: 50%;
+            left: 50%;
+            position: absolute;
+        }
 </style>
 <div class="form-group">
     <input type="text" placeholder="Search product" class="form-control" style="margin-bottom:10px;" id="textSearch" />
@@ -26,16 +43,21 @@
 <div id="result">
     @Html.Partial("~/Views/Compare/_Search.cshtml", Model)
 </div>
+<div class="loader">
+    <img src="~/Content/loader.gif" />
+</div>
 <script>
     function searchProduct() {
         var url = '/Compare/Search';
-        var text = $('#textSearch').val();
+        var text = $('#textSearch').val().trim();
         url = url + '?text=' + text;
+        $('.loader').show();
         $.ajax({
             url: url,
             success: function (response) {
                 $('#result *').remove();
                 $('#result').append(response);
+                $('.loader').hide();
             }
         });
     }

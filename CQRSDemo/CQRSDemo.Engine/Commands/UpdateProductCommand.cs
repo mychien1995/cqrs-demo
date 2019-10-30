@@ -44,6 +44,18 @@ namespace CQRSDemo.Engine.Commands
                 var value = JsonConvert.SerializeObject(product);
                 context.Database.StringSet(product.CacheKey, value);
             }
+            Task.Run(() =>
+            {
+                using (var tmpContext = new RedisContext())
+                {
+                    var searchKeys = tmpContext.GetKeys("ProductSearch-*");
+                    foreach (var key in searchKeys)
+                    {
+                        tmpContext.Database.KeyDelete(key);
+                    }
+
+                }
+            });
         }
         private void UpdateToElasticSearch(ProductModel product)
         {

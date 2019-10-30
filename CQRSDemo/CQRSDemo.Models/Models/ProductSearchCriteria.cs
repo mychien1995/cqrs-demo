@@ -24,7 +24,7 @@ namespace CQRSDemo.Models
         {
             get
             {
-                return $"Product-[{Text}]-[{Type}]-[{Category}]-[{Brand}]-[{PageIndex}]-[{PageSize}]";
+                return $"ProductSearch-[{Text}]-[{Type}]-[{Category}]-[{Brand}]-[{PageIndex}]-[{PageSize}]";
             }
         }
 

@@ -18,12 +18,32 @@
         max-width: 350px;
         word-break: break-word;
     }
+
+    .loader {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        background: #000;
+        top: 0;
+        left: 0;
+        opacity: 0.3;
+        display: none;
+    }
+
+        .loader img {
+            top: 50%;
+            left: 50%;
+            position: absolute;
+        }
 </style>
 <div class="form-group">
     <input type="text" placeholder="Search product" class="form-control" style="margin-bottom:10px;" id="textSearch" />
     <button class="btn btn-primary" onclick="searchProduct()">Search</button>
     <a class="btn btn-primary" href="/Products/Insert" style="margin-left:10px">Insert</a>
     <input type="hidden" value="@ViewBag.IsSql" id="isSql" />
+</div>
+<div class="loader">
+    <img src="~/Content/loader.gif" />
 </div>
 <div id="result">
     @Html.Partial("~/Views/Products/_Search.cshtml", Model)
@@ -34,11 +54,13 @@
         var url = isSql ? '/Products/SqlSearch' : '/Products/Search';
         var text = $('#textSearch').val();
         url = url + '?text=' + text;
+        $('.loader').show();
         $.ajax({
             url: url,
             success: function (response) {
                 $('#result *').remove();
                 $('#result').append(response);
+                $('.loader').hide();
             }
         });
     }

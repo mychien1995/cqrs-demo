@@ -98,7 +98,7 @@ namespace CQRSDemo.Presentation.Controllers
         [HttpPost]
         public ActionResult Update(ProductModel model)
         {
-            var command = new CreateProductCommand(model);
+            var command = new UpdateProductCommand(model);
             command.Execute();
             return RedirectToAction("Index");
         }
@@ -125,7 +125,7 @@ namespace CQRSDemo.Presentation.Controllers
             }
             using (var context = new RedisContext())
             {
-                context.Database.KeyDelete("*");
+                context.Database.Execute("flushdb");
             }
             return new EmptyResult();
         }
