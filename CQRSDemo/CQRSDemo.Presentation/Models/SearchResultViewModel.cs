@@ -10,5 +10,8 @@ namespace CQRSDemo.Presentation.Models
     {
         public SearchResult<T> Data { get; set; }
         public long QueryTime { get; set; }
+
+        public long SqlQueryTime { get; set; }
+        public long RedisQueryTime { get; set; }
     }
 }

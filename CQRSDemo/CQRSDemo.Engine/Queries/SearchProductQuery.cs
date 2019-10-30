@@ -28,8 +28,14 @@ namespace CQRSDemo.Engine.Queries
                     var searcher = new ContentSearcher();
                     //Search with elastic search
                     SearchResult<ProductModel> searchResult = searcher.Search(Query);
-                    var serializedValue = JsonConvert.SerializeObject(searchResult);
-                    context.Database.StringSet(Query.CacheKey, serializedValue);
+                    Task.Run(() =>
+                    {
+                        using (var tmpContext = new RedisContext())
+                        {
+                            var serializedValue = JsonConvert.SerializeObject(searchResult);
+                            tmpContext.Database.StringSet(Query.CacheKey, serializedValue);
+                        }
+                    });
                     return searchResult;
                 }
                 var result = JsonConvert.DeserializeObject<SearchResult<ProductModel>>(cachedObject);

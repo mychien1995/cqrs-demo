@@ -1,0 +1,42 @@
+﻿@using CQRSDemo.Models
+@model CQRSDemo.Presentation.Models.SearchResultViewModel<ProductModel>
+
+
+<h1>@ViewBag.Heading</h1>
+<style>
+    table > tbody tr td:nth-child(5) {
+        max-width: 100px;
+        word-break: break-word;
+    }
+
+    table > tbody tr td:nth-child(4) {
+        max-width: 200px;
+        word-break: break-word;
+    }
+
+    table > tbody tr td:nth-child(2) {
+        max-width: 350px;
+        word-break: break-word;
+    }
+</style>
+<div class="form-group">
+    <input type="text" placeholder="Search product" class="form-control" style="margin-bottom:10px;" id="textSearch" />
+    <button class="btn btn-primary" onclick="searchProduct()">Search</button>
+</div>
+<div id="result">
+    @Html.Partial("~/Views/Compare/_Search.cshtml", Model)
+</div>
+<script>
+    function searchProduct() {
+        var url = '/Compare/Search';
+        var text = $('#textSearch').val();
+        url = url + '?text=' + text;
+        $.ajax({
+            url: url,
+            success: function (response) {
+                $('#result *').remove();
+                $('#result').append(response);
+            }
+        });
+    }
+</script>

@@ -1,0 +1,36 @@
+﻿@{
+    Layout = null;
+}
+@using CQRSDemo.Models
+@model CQRSDemo.Presentation.Models.SearchResultViewModel<ProductModel>
+
+<h3>SQL Execution time: @Model.SqlQueryTime ms</h3>
+<h3>Redis EL Execution time: @Model.RedisQueryTime ms</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>Name</td>
+            <td>Brand</td>
+            <td>Categories</td>
+            <td>Color</td>
+            <td>Price</td>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var data = Model.Data.Result;
+            foreach (var item in data)
+            {
+                <tr>
+                    <td>@item.ProductId</td>
+                    <td>@item.ProductName</td>
+                    <td>@item.ProductBrand</td>
+                    <td>@item.ProductCategory</td>
+                    <td>@item.ProductType</td>
+                    <td>@item.ProductPrice</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
