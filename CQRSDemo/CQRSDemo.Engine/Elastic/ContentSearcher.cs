@@ -68,30 +68,14 @@ namespace CQRSDemo.Engine.Elastic
             var queries = new List<Func<QueryContainerDescriptor<ProductIndexDocument>, QueryContainer>>();
             if (!string.IsNullOrEmpty(criteria.Text))
             {
-                criteria.Text = "*" + criteria.Text + "*";
-                queries.Add(x => x.Wildcard(w => w.Field(f => f.ProductName).Value(criteria.Text)));
+                criteria.Text = "*" + criteria.Text.ToLower() + "*";
             }
-            if (!string.IsNullOrEmpty(criteria.Brand))
-            {
-                queries.Add(x => x.Match(m => m.Field(f => f.ProductBrand).Query(criteria.Brand)));
-            }
-            if (!string.IsNullOrEmpty(criteria.Category))
-            {
-                queries.Add(x => x.Match(m => m.Field(f => f.ProductCategories).Query(criteria.Category)));
-            }
-            if (!string.IsNullOrEmpty(criteria.Type))
-            {
-                queries.Add(x => x.Match(m => m.Field(f => f.ProductType).Query(criteria.Type)));
-            }
-
-            var response = client.Search<ProductIndexDocument>(
+            var response = string.IsNullOrEmpty(criteria.Text) ? client.Search<ProductIndexDocument>(
+                x => x.Sort(s => s.Descending(c => c.ProductId)).Skip(criteria.PageIndex * criteria.PageSize).Take(criteria.PageSize)
+                ) : client.Search<ProductIndexDocument>(
                 x => x.Query(
-                    c => c.Bool(
-                        b => b.Must(
-                            queries
-                        )
-                        )
-                    ).Sort(s => s.Descending(c => c.ProductId)).Skip(criteria.PageIndex * criteria.PageSize).Take(criteria.PageSize)
+                    c => c.Wildcard(w => w.Field(f => f.ProductName).Value(criteria.Text))
+                    ).Skip(criteria.PageIndex * criteria.PageSize).Take(criteria.PageSize)
                 );
             var projects = response.Documents;
             var data = projects.Select(x => x.ToModel()).ToList();

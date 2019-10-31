@@ -36,7 +36,35 @@ namespace CQRSDemo.Engine.Elastic
         private static void Initialize()
         {
             var client = new ElasticClient(Node);
-            client.Indices.Create(IndexName, index => index.Map<ProductIndexDocument>(x => x.AutoMap()));
+            var response = client.Indices.Create(IndexName, index => index
+            .Map<ProductIndexDocument>(
+                x => x.AutoMap()
+                .Properties(p => p.Text(
+                    t => t.Name(n => n.ProductName)
+                    .Analyzer("wildcard_analyzer")
+                    .SearchAnalyzer("wildcard_analyzer")
+                )
+            ))
+            .Settings(st => st
+                .Analysis(an => an
+                    .Analyzers(anz => anz
+                        .Custom("ngram_analyzer", cc => cc
+                            .Tokenizer("standard")
+                            .Filters(new List<string> { "lowercase", "myNGram" }))
+                        .Custom("ngram_search_analyzer", cc => cc
+                            .Tokenizer("standard")
+                            .Filters(new List<string> { "standard", "lowercase", "myNGram" }))
+                        .Custom("wildcard_analyzer", cc => cc
+                            .Tokenizer("keyword")
+                            .Filters(new List<string> { "lowercase" }))
+                    )
+                    .TokenFilters(
+                         t => t.NGram("myNGram", x => x.MinGram(2).MaxGram(20))
+                    )
+                )
+                .Setting(UpdatableIndexSettings.MaxNGramDiff, 20)
+           )
+         );
         }
     }
 }

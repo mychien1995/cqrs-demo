@@ -69,9 +69,11 @@
         var confirmPrm = confirm("Are you sure you want to delete this");
         if (confirmPrm) {
             var url = '/Products/Delete?id=' + id;
+            $('.loader').show();
             $.ajax({
                 url: url,
                 success: function (response) {
+                    $('.loader').hide();
                     window.location.reload();
                 }
             });
