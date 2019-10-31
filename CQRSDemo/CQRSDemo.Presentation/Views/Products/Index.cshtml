@@ -64,4 +64,17 @@
             }
         });
     }
+
+    function deleteProduct(id) {
+        var confirmPrm = confirm("Are you sure you want to delete this");
+        if (confirmPrm) {
+            var url = '/Products/Delete?id=' + id;
+            $.ajax({
+                url: url,
+                success: function (response) {
+                    window.location.reload();
+                }
+            });
+        }
+    }
 </script>

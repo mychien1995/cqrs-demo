@@ -89,6 +89,15 @@ namespace CQRSDemo.Presentation.Controllers
         }
 
         [HttpGet]
+        public ActionResult Delete(int id)
+        {
+            var command = new DeleteProductCommand(id);
+            var product = command.Execute();
+            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [HttpGet]
         public ActionResult Update(int id)
         {
             var query = new GetProductByIdQuery(id);

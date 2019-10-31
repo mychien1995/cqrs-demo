@@ -29,7 +29,10 @@
                     <td>@item.ProductCategory</td>
                     <td>@item.ProductType</td>
                     <td>@item.ProductPrice</td>
-                    <td><a class="btn-sm btn-info" href="/Products/Update?id=@item.ProductId"><i class="glyphicon-pencil"></i></a></td>
+                    <td>
+                        <a class="btn-sm btn-info" href="/Products/Update?id=@item.ProductId"><i class="glyphicon-pencil"></i></a>
+                        <a class="btn-sm btn-danger" href="javascript:void(0)" onclick="deleteProduct('@item.ProductId')">X</a>
+                    </td>
                 </tr>
             }
         }

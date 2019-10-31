@@ -11,13 +11,17 @@ namespace CQRSDemo.Engine.Elastic
 {
     public class ContentSearcher
     {
-        public ProductModel GetProductById(int id)
+        public ProductIndexDocument GetProductDocumentById(int id)
         {
             var client = ElasticSearchContext.Client;
             var response = client.Search<ProductIndexDocument>(x => x.Query(c => c.Bool(b => b.Must(a => a.Term(n => n.ProductId, id)))));
             var projects = response.Documents;
-            var data = projects.Select(x => x.ToModel()).ToList();
-            return data.FirstOrDefault();
+            return projects.FirstOrDefault();
+        }
+        public ProductModel GetProductById(int id)
+        {
+            var document = GetProductDocumentById(id);
+            return document.ToModel();
         }
 
         public SearchResult<int> SearchIdOnly(ProductSearchCriteria criteria)

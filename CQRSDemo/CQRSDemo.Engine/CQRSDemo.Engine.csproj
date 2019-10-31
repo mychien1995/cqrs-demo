@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\CreateProductCommand.cs" />
+    <Compile Include="Commands\DeleteProductCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\UpdateProductCommand.cs" />
     <Compile Include="Elastic\ContentIndexer.cs" />

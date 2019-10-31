@@ -11,6 +11,13 @@ namespace CQRSDemo.Engine.Elastic
 {
     public class ContentIndexer
     {
+        public void Delete(int id)
+        {
+            var client = ElasticSearchContext.Client;
+            var document = new ContentSearcher().GetProductDocumentById(id);
+            var response = client.Delete<ProductIndexDocument>(document, x => x.Index(ElasticSearchContext.IndexName).Refresh(Elasticsearch.Net.Refresh.WaitFor));
+        }
+
         public void Index(ProductModel model)
         {
             var client = ElasticSearchContext.Client;
