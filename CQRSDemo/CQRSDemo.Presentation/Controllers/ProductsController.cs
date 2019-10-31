@@ -6,6 +6,7 @@ using CQRSDemo.Engine.Queries;
 using CQRSDemo.Engine.Redis;
 using CQRSDemo.Models;
 using CQRSDemo.Presentation.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -126,6 +127,22 @@ namespace CQRSDemo.Presentation.Controllers
             using (var context = new RedisContext())
             {
                 context.Database.Execute("flushdb");
+            }
+            return new EmptyResult();
+        }
+
+        [HttpGet]
+        public ActionResult RedisReindex()
+        {
+            var contentIndexer = new ContentIndexer();
+            var products = new ProductRepository().GetAll().Select(x => x.ToModel()).ToList();
+            using (var context = new RedisContext())
+            {
+                context.Database.Execute("flushdb");
+                foreach (var product in products)
+                {
+                    context.Database.StringSet(product.CacheKey, JsonConvert.SerializeObject(product));
+                }
             }
             return new EmptyResult();
         }

@@ -15,7 +15,7 @@ namespace CQRSDemo.Engine.Elastic
         {
             var client = ElasticSearchContext.Client;
             var document = model.ToDocument();
-            var response = client.IndexDocument(document);
+            var response = client.Index(document, x => x.Index(ElasticSearchContext.IndexName).Refresh(Elasticsearch.Net.Refresh.WaitFor));
         }
 
         public void IndexMany(IEnumerable<ProductModel> models)
@@ -24,10 +24,6 @@ namespace CQRSDemo.Engine.Elastic
             var documents = models.Select(x => x.ToDocument());
             var test = documents.First();
             var response = client.IndexMany(documents);
-            if (!response.ApiCall.Success)
-            {
-
-            }
         }
     }
 }

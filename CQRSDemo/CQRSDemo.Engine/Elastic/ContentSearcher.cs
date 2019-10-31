@@ -19,12 +19,49 @@ namespace CQRSDemo.Engine.Elastic
             var data = projects.Select(x => x.ToModel()).ToList();
             return data.FirstOrDefault();
         }
+
+        public SearchResult<int> SearchIdOnly(ProductSearchCriteria criteria)
+        {
+            var client = ElasticSearchContext.Client;
+            var queries = new List<Func<QueryContainerDescriptor<ProductIndexDocument>, QueryContainer>>();
+            if (!string.IsNullOrEmpty(criteria.Text))
+            {
+                queries.Add(x => x.Match(m => m.Field(f => f.ProductName).Query(criteria.Text)));
+            }
+            if (!string.IsNullOrEmpty(criteria.Brand))
+            {
+                queries.Add(x => x.Match(m => m.Field(f => f.ProductBrand).Query(criteria.Brand)));
+            }
+            if (!string.IsNullOrEmpty(criteria.Category))
+            {
+                queries.Add(x => x.Match(m => m.Field(f => f.ProductCategories).Query(criteria.Category)));
+            }
+            if (!string.IsNullOrEmpty(criteria.Type))
+            {
+                queries.Add(x => x.Match(m => m.Field(f => f.ProductType).Query(criteria.Type)));
+            }
+
+            var response = client.Search<ProductIndexDocument>(
+                x => x
+                .Query(
+                    c => c.Bool(
+                        b => b.Must(
+                            queries
+                        )
+                        )
+                    ).Sort(s => s.Descending(c => c.ProductId)).Skip(criteria.PageIndex * criteria.PageSize).Take(criteria.PageSize)
+                );
+            var projects = response.Documents;
+            var data = projects.Select(x => x.ProductId).ToList();
+            var result = new SearchResult<int>();
+            result.Result = data;
+            return result;
+        }
+
         public SearchResult<ProductModel> Search(ProductSearchCriteria criteria)
         {
             var client = ElasticSearchContext.Client;
             var queries = new List<Func<QueryContainerDescriptor<ProductIndexDocument>, QueryContainer>>();
-
-
             if (!string.IsNullOrEmpty(criteria.Text))
             {
                 queries.Add(x => x.Match(m => m.Field(f => f.ProductName).Query(criteria.Text)));

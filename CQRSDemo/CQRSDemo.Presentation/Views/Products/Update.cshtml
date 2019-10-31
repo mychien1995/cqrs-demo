@@ -2,6 +2,7 @@
 
 @using (Html.BeginForm("Update", "Products", FormMethod.Post))
 {
+    @Html.HiddenFor(x => x.ProductId)
     <div class="form-group">
         <label>Product Name</label>
         @Html.TextBoxFor(x => x.ProductName, new { @class = "form-control" })
