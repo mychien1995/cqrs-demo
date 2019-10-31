@@ -68,7 +68,8 @@ namespace CQRSDemo.Engine.Elastic
             var queries = new List<Func<QueryContainerDescriptor<ProductIndexDocument>, QueryContainer>>();
             if (!string.IsNullOrEmpty(criteria.Text))
             {
-                queries.Add(x => x.Match(m => m.Field(f => f.ProductName).Query(criteria.Text)));
+                criteria.Text = "*" + criteria.Text + "*";
+                queries.Add(x => x.Wildcard(w => w.Field(f => f.ProductName).Value(criteria.Text)));
             }
             if (!string.IsNullOrEmpty(criteria.Brand))
             {
